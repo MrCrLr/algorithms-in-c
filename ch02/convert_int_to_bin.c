@@ -86,5 +86,5 @@ int main(void) {
 
     binary(num);
 
-    return EXIT_SUCCESS;
+    return 0;
 }
