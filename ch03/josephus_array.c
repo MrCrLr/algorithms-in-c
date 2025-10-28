@@ -1,31 +1,57 @@
 #include <stdio.h>
 
 int main(void) {
-    int i, M, N;
+    int M, N;
+    printf("|****** PLAY PIG DEATH CULT *******|\n");
+    printf("| Enter two positive digits with a |\n");
+    printf("| space in between & press enter.  |\n");
+    printf("\n");
     scanf("%d %d", &M, &N);
-    printf("First suicide: %d\n", M);
-    printf("Cult members: %d\n", N);
+    printf("Countdown: %d\n", M);
+    printf("Cult membership: %d\n", N);
 
-    int death_order[N] = {};
-    
-    for (int j = 0, i = M; j < N; j++) {
-        if (j == 0) {
-            death_order[j] = M;
-        } else if (i > N) {
-            death_order[j] = i - N;
-            i = i - N;
-        } else {
-            death_order[j] = i;
+    int death_array[N] = {};
+    int dead[N] = {};
+    int remaining = N;
+    int index = 0;
+
+    for (int i = 0; i < N; i++) {
+        int count = 0;
+        while (count < M) {
+            if (!dead[index]) count++;
+            if (count == M) break;
+            index = (index + 1) % N;
         }
-        i = i + M;
+
+        dead[index]++;
+        death_array[i] = index + 1;
+        remaining--;
+        printf("Death #%2d: member %2d\n", i + 1, index + 1);
+        
+        index = (index + 1) % N;
+        
+        while (remaining > 0 && dead[index]) {
+            index = (index + 1) % N;
+        }
     }
-    
+    printf("\n");
     printf("Death order:\n");
-    for (int j = 0; j < N - 1; j++) {
-        printf("%d ", death_order[j]);
+    for (int i = 0; i < N - 1; i++) {
+        printf("%d ", death_array[i]);
     }
     printf("?\n");
-    printf("Last member left... %d\n", death_order[N - 1]);
+    printf("Last member left alive... %d\n", death_array[N - 1]);
+    printf("\n");
+    printf("    (\\____/)\n");
+    printf("    / @__@ \\\n");
+    printf("   (  (oo)  )      OINK! OINK!\n"); 
+    printf("    `-.~~.-'\n");
+    printf("____// :: \\\\___________________________\n");
+    printf("   (!)=[]=(!)\n");    
+    printf("== _\\__/\\__/_== == == == == == == == ==\n");   
+    printf("__[___∞)(∞___]_________________________\n");
+    printf("^” ^”^^”^ ^””^ ^^””^^ ^”^”^^” ””^^”^ ^^\n");
+    printf("\n");
     
     return 0;
 }
