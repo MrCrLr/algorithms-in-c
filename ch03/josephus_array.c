@@ -2,13 +2,12 @@
 
 int main(void) {
     int M, N;
-    printf("|****** PLAY PIG DEATH CULT *******|\n");
     printf("| Enter two positive digits with a |\n");
     printf("| space in between & press enter.  |\n");
     printf("\n");
     scanf("%d %d", &M, &N);
     printf("Countdown: %d\n", M);
-    printf("Cult membership: %d\n", N);
+    printf("Total members: %d\n", N);
 
     int death_array[N] = {};
     int dead[N] = {};
@@ -41,17 +40,7 @@ int main(void) {
     }
     printf("?\n");
     printf("Last member left alive... %d\n", death_array[N - 1]);
-    printf("\n");
-    printf("    (\\____/)\n");
-    printf("    / @__@ \\\n");
-    printf("   (  (oo)  )      OINK! OINK!\n"); 
-    printf("    `-.~~.-'\n");
-    printf("____// :: \\\\___________________________\n");
-    printf("   (!)=[]=(!)\n");    
-    printf("== _\\__/\\__/_== == == == == == == == ==\n");   
-    printf("__[___∞)(∞___]_________________________\n");
-    printf("^” ^”^^”^ ^””^ ^^””^^ ^”^”^^” ””^^”^ ^^\n");
-    printf("\n");
+
     
     return 0;
 }
