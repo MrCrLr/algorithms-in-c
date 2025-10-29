@@ -35,6 +35,14 @@ Node *insert_at_start(Node *head, int value) {
     return new_node;
 }
 
+Node *find(Node *head, int value) {
+    Node *target = head;
+    while (target && target->key != value) {
+        target = target->next;
+    }
+    return target;
+}
+
 void delete_node(Node **head, Node *target) {
     if (!target) 
         return;
@@ -89,14 +97,15 @@ int main(void)
     printf("What number to delete? ");
     scanf("%d", &num);
 
-    Node *target = head;
-    while (target && target->key != num) {
-        target = target->next;
-    }
-    delete_node(&head, target);
+    Node *target = find(head, num);
 
-    printf("After deleting %d: ", num);
-    print_list(head);
+    if (target) {
+        delete_node(&head, target);
+        printf("After deleting %d: ", num);
+        print_list(head);
+    } else {
+        printf("%d not found; list unchanged.\n", num);
+    }
 
     free_list(head);
     return 0;
