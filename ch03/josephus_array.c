@@ -41,6 +41,5 @@ int main(void) {
     printf("?\n");
     printf("Last member left alive... %d\n", death_array[N - 1]);
 
-    
     return 0;
 }
