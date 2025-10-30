@@ -11,4 +11,4 @@ I'm working on learning to code algorithms from the book by Robert Sedgewick and
 ---
 ### Chapter 3:
 **Elementary Data Structures**
-- Coming soon... 
+- Completed all exercises for this chapter. Linked lists are much clearer to work with than parallel arrays in my opinion. The pushdown stack with parallel arrays is something I will need to review further, but I'm looking forward to expanding this comfort with stacks and queues to the next chapter on trees. 
