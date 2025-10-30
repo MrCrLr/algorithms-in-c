@@ -1,56 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define max 100
+#define MAX 10
+int key[MAX];
+int next[MAX];
+int top, freep;
 
-static char stack[max+1];
-static int p;
-
-void print_stack(void) {
-    for (int i = 0; i < p; i++)
-        printf("%c ", stack[i]);
-    printf("\n");
+void init_stack(void) {
+    top = 0;
+    for (int i = 1; i < MAX - 1; i++)
+        next[i] = i + 1;
+    next[MAX - 1] = 0;
+    freep = 1;
 }
 
-int stack_empty(void) {
-    return !p;
+void push(int val) {
+    int i = freep;
+    freep = next[i];
+    key[i] = val;
+    next[i] = top;
+    top = i;
 }
 
-void push(char c) {
-    print_stack();
-    stack[p++] = c;
-}
-
-char pop(void) {
-    if (stack_empty()) {
-        printf("Stack empty!");
-        return 0;
-    } else {
-        print_stack();
-        return stack[--p];
+int pop(void) {
+    if (top == 0) {
+        printf("Stack underflow!\n");
+        return -1;
     }
-}
-
-void stack_init(void) {
-    p = 0;
+    int i = top;
+    int val = key[i];
+    top = next[i];
+    next[i] = freep;
+    freep = i;
+    return val;
 }
 
 int main(void) 
 {
-    stack_init();
+    init_stack();
+    push(10);
+    push(20);
+    push(30);
 
-    push('C');
-    push('Y');
-    push('B');
-    pop();  
-    push('O');
-    pop();
-    pop();        
-    push('R');
-    push('G'); 
-    pop();
-    pop();
-    pop();
+    printf("%d\n", pop()); // 30
+    printf("%d\n", pop()); // 20
+    printf("%d\n", pop()); // 10
 
     return 0;
 }
