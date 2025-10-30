@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -40,6 +41,25 @@ int pop(Node **stack) {
     return value;
 }
 
+bool peek(const Node *stack, int *out_value) {
+    if (stack == NULL) {
+        return false;
+    }
+    if (out_value != NULL) {
+        *out_value = stack->key;
+    }
+    return true;
+}
+
+void free_stack(Node *stack) {
+    Node *tmp = stack;
+    while (tmp) {
+        Node *next = tmp->next;
+        free(tmp);
+        tmp = next;
+    }
+}
+
 void print_stack(Node *stack) {
     for (Node *t = stack; t; t = t->next)
         printf("%d ", t->key);
@@ -48,19 +68,32 @@ void print_stack(Node *stack) {
 
 int main(void) 
 {
-    Node *stack = init_stack(10);
+    Node *stack = init_stack(5);
     push(&stack, 9);
-    push(&stack, 5);
-    push(&stack, 2);
-
+    push(&stack, 8);
+    push(&stack, pop(&stack) + pop(&stack));
+    push(&stack, 4);
+    push(&stack, 6);
+    push(&stack, pop(&stack) * pop(&stack));
+    push(&stack, pop(&stack) * pop(&stack));
+    push(&stack, 7);
+    push(&stack, pop(&stack) + pop(&stack));
+    push(&stack, pop(&stack) * pop(&stack));
+    
     printf("Stack before pop: ");
     print_stack(stack);
 
     int x = pop(&stack);
     printf("Popped value: %d\n", x);
-
     printf("Stack after pop: ");
     print_stack(stack);
 
+    int value;
+    if (peek(stack, &value)) 
+        printf("Top of stack: %d\n", value);
+    else
+        printf("Stack is empty.\n");
+
+    free_stack(stack);
     return 0;
 }

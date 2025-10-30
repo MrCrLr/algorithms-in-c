@@ -6,6 +6,7 @@ typedef struct Node {
     struct Node *next;
 } Node;
 
+// Initialize linked list with sentinel nodes at head and tail
 Node *init_list() {
     Node *head = malloc(sizeof *head);
         if (!head) {
@@ -18,66 +19,71 @@ Node *init_list() {
         exit(EXIT_FAILURE);
     }
     head->next = tail;
-    tail->next = tail;
+    tail->next = tail; 
     return head;
 }
 
-void delete_next(Node *t) {
-    t->next = t->next->next;
+void delete_next(Node *curr) {
+    if (curr == NULL || curr->next == NULL) {
+        return;
+    }
+    Node *target = curr->next;
+    curr->next = target->next;
+    free(target);
 }
 
-Node *insert_after(int v, Node *t) {
-    Node *x = malloc(sizeof *x);
-    if (!x) {
+Node *insert_after(int value, Node *curr) {
+    Node *new_node = malloc(sizeof *new_node);
+    if (!new_node) {
         perror("malloc failed in insert_after");
         exit(EXIT_FAILURE);
     }
-    x->key = v;
-    x->next = t->next;
-    t->next = x;
-    return x;
+    new_node->key = value;
+    new_node->next = curr->next;
+    curr->next = new_node;
+    return new_node;
 }
 
-Node *move_next_to_front(Node *head, Node *tail, Node *t) {
-    if (!head || !t || !t->next) return head;
-    if (t->next == tail) return head;
+Node *move_next_to_front(Node *head, Node *tail, Node *curr) {
+    if (!head || !curr || !curr->next) return head;
+    if (curr->next == tail) return head;
 
-    Node *x = t->next;
-    t->next = x->next;
-    x->next = head->next;
-    head->next = x;
+    Node *target = curr->next;
+    curr->next = target->next;
+    target->next = head->next;
+    head->next = target;
 
     return head;
 }
 
-Node *exchange(Node *head, Node *tail, Node *t, Node *u) {
-    if (!head || !t || !t->next || !u || !u->next) return head;
-    if (t->next == tail || u->next == tail) return head;
-    if (t == u) return head;
+Node *exchange(Node *head, Node *tail, Node *left, Node *right) {
+    if (!head || !left || !left->next || !right || !right->next) return head;
+    if (left->next == tail || right->next == tail) return head;
+    if (left == right) return head;
 
-    Node *x = t->next;
-    Node *y = u->next;
+    Node *x = left->next;
+    Node *y = right->next;
 
     // Case 1: Non-adjacent
-    if (x != u && y != t) {
+    if (x != right && y != left) {
         Node *tmp = x->next;
-        t->next = y;
-        u->next = x;
+        left->next = y;
+        right->next = x;
         x->next = y->next;
         y->next = tmp;
         return head;
     }
-    // Case 2: Adjacent (x follows t, and y == x->next)
-    // t -> x -> y
-    if (u == x) {
-        t->next = y;
+    // Case 2: Adjacent (x follows left, and y == x->next)
+    // left -> x -> y
+    if (right == x) {
+        left->next = y;
         x->next = y->next;
         y->next = x;
         return head;
     }
-    // Case 3: Adjacent reversed (u before t)
-    if (t == y) {
-        u->next = x;
+    // Case 3: Adjacent reversed (right before left)
+    if (left == y) {
+        right->next = x;
         y->next = x->next;
         x->next = y;
         return head;
@@ -87,23 +93,23 @@ Node *exchange(Node *head, Node *tail, Node *t, Node *u) {
 }
 
 void print_list(Node *head) {
-    Node *t = head->next;
-    while (t->next != t) {
-        printf("%d", t->key);
-        t = t->next;
-        if (t->next != t) printf("->");
+    Node *tmp = head->next;
+    while (tmp->next != tmp) {
+        printf("%d", tmp->key);
+        tmp = tmp->next;
+        if (tmp->next != tmp) printf("->");
     }
     printf("\n");
 }
 
 void free_list(Node *head) {
-    Node *t = head;
-    while (t->next != t) {
-        Node *next = t->next;
-        free(t);
-        t = next;
+    Node *target = head;
+    while (target->next != target) {
+        Node *next = target->next;
+        free(target);
+        target = next;
     }
-    free(t);
+    free(target); // free tail sentinel
 }
 
 int main(void) 
